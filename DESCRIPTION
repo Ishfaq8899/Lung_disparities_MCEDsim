@@ -1,9 +1,9 @@
 Package: LungDisparitiesMCEDsim
-Title: Simulation Model for MCED Project
+Title: Simulation Model for Lung Cancer Disparities in MCED
 Version: 0.1.0
 Authors@R: 
     person("ishfaq", "LastName", email = "ishfaqmaths899@gmail.com", role = c("aut", "cre"))
-Description: Simulation framework for multi-cancer early detection (MCED) modeling.
+Description: Simulation framework for modeling disparities in lung cancer outcomes under multi cancer early detection (MCED) screening.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
