@@ -16,7 +16,8 @@ sim_individual_MCED(
   screen_interval,
   end_time,
   sex,
-  surv_param_table
+  surv_param_table,
+  optimistic_surv_param_table = NULL
 )
 }
 \arguments{
@@ -44,6 +45,8 @@ sim_individual_MCED(
 \item{sex}{"Male" or "Female".}
 
 \item{surv_param_table}{Survival parameters table (for simulating cancer death).}
+
+\item{optimistic_surv_param_table}{Survival optimistic parameters table (for simulating cancer death).}
 }
 \value{
 A data frame with the individual's first-cancer outcomes (onset, screen/clinical diagnosis times and stages),
@@ -71,7 +74,7 @@ data("parametric_surv_fits")
 
 #' # Cancer sites in the MCED test
 cancer_sites_vec <- c("Anus", "Bladder", "Breast", "Esophagus",
-                     "Gastric", "Headandneck", "Liver", 
+                     "Gastric", "Headandneck", "Liver",
                      "Lung", "Pancreas", "Prostate", "Renal", "Uterine", "Ovary")
 
 result <- sim_individual_MCED(

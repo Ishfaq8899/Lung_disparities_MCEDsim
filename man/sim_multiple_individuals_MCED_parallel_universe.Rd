@@ -104,7 +104,7 @@ data("parametric_surv_fits")
 #Specify inputs
 #Cancer sites in the MCED test
 cancer_sites_vec=c("Anus",  "Bladder",  "Breast", "Esophagus",
-                  "Gastric", "Headandneck","Liver" , 
+                  "Gastric", "Headandneck","Liver" ,
                   "Lung",   "Pancreas", "Prostate", "Renal",  "Uterine","Ovary")
 
 #overall mean sojourn time=2 years for all sites

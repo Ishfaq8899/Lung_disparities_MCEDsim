@@ -6,7 +6,6 @@
 \usage{
 sim_multiple_cancer_indiv(
   ID,
-  cancer_sites,
   rate_matrices,
   early_sensitivities,
   late_sensitivities,
@@ -14,13 +13,12 @@ sim_multiple_cancer_indiv(
   start.time,
   end.time,
   obs.times,
-  start.states
+  start.states,
+  cancer_sites
 )
 }
 \arguments{
 \item{ID}{Numeric identifier for the individual.}
-
-\item{cancer_sites}{Character vector specifying the names of cancer sites.}
 
 \item{rate_matrices}{List of rate matrices corresponding to each cancer site.}
 
@@ -35,6 +33,8 @@ sim_multiple_cancer_indiv(
 \item{obs.times}{Numeric vector specifying observation times.}
 
 \item{start.states}{Numeric value specifying the initial states for each of the cancer types.}
+
+\item{cancer_sites}{Character vector specifying the names of cancer sites.}
 }
 \value{
 A data frame containing simulated observations for each cancer site.

@@ -11,7 +11,8 @@ get.obs.data.individual(
   obs.times = seq(1, 30, 2),
   end.time = 30,
   start.time = 0,
-  start.state = 1
+  start.state = 1,
+  cancer_site = NA
 )
 }
 \arguments{
