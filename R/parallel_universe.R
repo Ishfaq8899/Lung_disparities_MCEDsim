@@ -185,14 +185,6 @@ sim_individual_MCED<-function( ID,
 
       }
 
-
-      #is the surv_param_table optimistic for screen-detected patients?
-      # if(!is.na(first_cancer_row$screen_diagnosis_stage)&!
-      #    is.na(first_cancer_row$clinical_diagnosis_stage)){
-      #   # browser()
-      #   print(table(screen_surv_param_table==optimistic_surv_param_table))
-      # }
-
     }
 
     result<-first_cancer_row
