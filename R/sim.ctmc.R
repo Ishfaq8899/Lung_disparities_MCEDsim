@@ -164,10 +164,11 @@ observed.data.hmm <- function(obs.times, underlying.states, emission.matrix) {
 }
 
 
-# function for make_ctmc_seed
+# function for make_ctmc_seed (added 4 cancer subtypes)
 make_ctmc_seed <- function(ID, cancer_site) {
   site_index <- match(cancer_site,c("Anus", "Bladder", "Esophagus", "Gastric", "Headandneck",
-                                    "Liver", "Lung", "Lymphoma", "Ovary", "Pancreas", "Renal", "Uterine"))
+                                    "Liver", "Lung", "Lymphoma", "Ovary", "Pancreas", "Renal", "Uterine",
+                                    "Lung_Adeno", "Lung_LargeCell", "Lung_SmallCell", "Lung_Squamous"))
 
   if (is.na(site_index)) {
     stop("Unknown cancer_site: ", cancer_site)
