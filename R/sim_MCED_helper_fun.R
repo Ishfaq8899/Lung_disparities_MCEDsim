@@ -18,9 +18,13 @@
         cancer_site = the_cancer_sites
       )
 
+    #  browser()
+
       the_indices <- all_meta_data %>%
         semi_join(target_combos, by = c("OMST", "LMST", "cancer_site")) %>%
         select(index)
+
+   #   browser()
 
       if(length(the_indices$index) > 1){
         rates_list <- purrr::array_branch(all_rates[,,unlist(the_indices)], 3)
@@ -36,6 +40,7 @@
         arrange(index) %>%
         select(cancer_site)
 
+   #   browser()
 
       return(list(rates_list = rates_list, cancer_sites = cancer_sites$cancer_site))
     }

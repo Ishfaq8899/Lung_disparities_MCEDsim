@@ -58,11 +58,16 @@ sim_cancer_death_param <- function(the_stage, the_cancer_site, the_sex,ID=NA,the
 
  if(!is.na(ID)){
    set.seed(ID)
-  }
+ }
+
+ # browser()
+
   # Filter the survival distribution based on the type and stage
   survival_dist_indiv = filter(param_table,cancer_site == paste(the_cancer_site), stage==paste(the_stage),
                                sex==paste(the_sex),model_type==paste(the_model_type))
 
+
+ # browser()
 
   if(length(survival_dist_indiv$model_type == "Loglogistic")==0){browser()}
 
@@ -75,6 +80,9 @@ sim_cancer_death_param <- function(the_stage, the_cancer_site, the_sex,ID=NA,the
   }
 
   death_time=rsurv(the_survobj,n=1)
+
+ # browser()
+
   return(death_time)
 }
 
