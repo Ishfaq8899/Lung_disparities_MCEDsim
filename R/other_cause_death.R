@@ -42,13 +42,13 @@
 #     filter(cancer_site %in% cancer_sites)
 #   return(filtered_data)
 # }
-
-# NEW: CDC/HMD mortality data has no subtype distinction -- everything is
-# just "Lung" at the ICD-10 level. So before filtering, collapse any
-# Lung_* subtype names (Lung_Adeno, Lung_LargeCell, Lung_SmallCell,
-# Lung_Squamous) back down to "Lung" for matching purposes only. This does
-# NOT change what gets returned in the data -- cancer_site is still
-# assigned as "Lung" by the case_when below, exactly as before.
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# NEW: CDC/HMD mortality data has no subtype distinction
+# everything is just "Lung" at the ICD-10 level. So before filtering, collapse any
+# Lung_* subtype names (Lung_Adeno, Lung_LargeCell, Lung_SmallCell,  Lung_Squamous)
+#  back down to "Lung" for matching purposes only. This does NOT change what gets returned
+# in the data -- cancer_site is still  assigned as "Lung" by the case_when below, exactly as before.
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 filter_multiple_cancers <- function(data, cancer_sites) {
     cancer_sites_collapsed <- ifelse(startsWith(cancer_sites, "Lung_"), "Lung", cancer_sites)
   filtered_data <-  data %>% mutate(cancer_site=case_when(

@@ -163,7 +163,10 @@ observed.data.hmm <- function(obs.times, underlying.states, emission.matrix) {
   return(out)
 }
 
-
+###################
+# NEW: We added 4 cancer subtypes (Lung_Adeno, Lung_LargeCell,
+#         - "Lung_SmallCell", "Lung_Squamous")
+##################
 # function for make_ctmc_seed (added 4 cancer subtypes)
 make_ctmc_seed <- function(ID, cancer_site) {
   site_index <- match(cancer_site,c("Anus", "Bladder", "Esophagus", "Gastric", "Headandneck",

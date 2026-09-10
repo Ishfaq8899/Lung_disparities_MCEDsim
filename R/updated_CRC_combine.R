@@ -105,6 +105,151 @@
 #'                                                 surv_param_table      = param_table,
 #'                                                 MCED_specificity      = 0.995,
 #'                                                 simulation_seed       = theseed)
+#########
+# OLD
+########
+# sim_MCED_parallel_universe_before_CRC <- function(cancer_sites,
+#                                                   LMST_vec,
+#                                                   OMST_vec,
+#                                                   test_performance_dataframe,
+#                                                   MCED_specificity,
+#                                                   starting_age,
+#                                                   ending_age,
+#                                                   num_screens,
+#                                                   screen_interval,
+#                                                   num_males,
+#                                                   num_females,
+#                                                   all_rates_male,
+#                                                   all_rates_female,
+#                                                   all_meta_data_female,
+#                                                   all_meta_data_male,
+#                                                   cdc_data,
+#                                                   hmd_data,
+#                                                   MCED_cdc,
+#                                                   surv_param_table,
+#                                                   optimistic_surv_param_table=NULL,
+#                                                   simulation_seed){
+#
+#
+#
+#  total_individuals=num_males+num_females
+#
+#
+#  start_male=(simulation_seed-1)*(total_individuals)+1
+#
+#  end_male=start_male+num_males-1
+#    # Create a vector of IDs
+#   IDs_male <- start_male:end_male
+#
+#   # Female IDs: continue sequentially after males
+#   IDs_female <-(end_male+1):(num_females+end_male)
+#
+#
+#   # ---- Extract Sex-Specific Rate Matrices ----
+#   # Extract rate matrices matrices based on OMST and LMST specs (Male)
+#   rates_list_male = get_filtered_rates(the_omsts = OMST_vec, the_lmsts = LMST_vec,
+#                                        all_meta_data = all_meta_data_male,
+#                                        all_rates = all_rates_male, the_cancer_sites = cancer_sites)
+#
+#   sites_male = rates_list_male$cancer_sites
+#   rates_list_male = rates_list_male$rates_list
+#
+#
+#   # Extract rate matrices matrices based on OMST and LMST specs (Female)
+#   rates_list_female = get_filtered_rates(the_omsts = OMST_vec, the_lmsts = LMST_vec,
+#                                          all_meta_data = all_meta_data_female,
+#                                          all_rates = all_rates_female, the_cancer_sites = cancer_sites)
+#   sites_female = rates_list_female$cancer_sites
+#   rates_list_female = rates_list_female$rates_list
+#
+#   # ---- Extract Test Performance Parameters ----
+#   # Extract sensitivities and specificity based on selected cancer sites
+#   test_performance_male = test_performance_dataframe %>% filter(cancer_site %in% as.vector(sites_male))
+#   test_performance_female = test_performance_dataframe %>% filter(cancer_site %in% as.vector(sites_female))
+#
+#   #Get the other-cause death tables for men and women
+#   other_cause_death_male=make_othercause_death_table(cdc_data=cdc_data,
+#                                                      MCED_cdc=MCED_cdc,
+#                                                      hmd_data=hmd_data,
+#                                                      the_starting_age = starting_age,
+#                                                      the_sex="Male",
+#                                                      selected_cancers=sites_male,
+#                                                      the_year=2018)
+#
+#   other_cause_death_female=make_othercause_death_table(cdc_data=cdc_data,
+#                                                        MCED_cdc=MCED_cdc,
+#                                                        hmd_data=hmd_data,
+#                                                        the_starting_age = starting_age,
+#                                                        the_sex="Female",
+#                                                        selected_cancers=sites_female,
+#                                                        the_year=2018)
+#
+#   # ---- Simulate Individual Outcomes ----
+#   # Use mapply to apply the sim_individual_MCED function to each ID (males)
+#   results_list_male <- mapply(sim_individual_MCED,
+#                               ID = IDs_male,
+#                               MoreArgs = list(rates_list=rates_list_male,
+#                                               cancer_sites=sites_male,
+#                                               test_performance=test_performance_male,
+#                                               other_cause_death_dist=other_cause_death_male,
+#                                               starting_age=starting_age,
+#                                               num_screens=num_screens,
+#                                               screen_interval=screen_interval,
+#                                               end_time=ending_age,
+#                                               surv_param_table=surv_param_table,
+#                                               optimistic_surv_param_table=optimistic_surv_param_table,
+#
+#                                               sex="Male",MCED_specificity=MCED_specificity),
+#                               SIMPLIFY = FALSE)
+#
+#   # Use mapply to apply the sim_individual_MCED function to each ID (females)
+#   results_list_female <- mapply(sim_individual_MCED,
+#                                 ID = IDs_female,
+#                                 MoreArgs = list(rates_list=rates_list_female,
+#                                                 cancer_sites=sites_female,
+#                                                 test_performance=test_performance_female,
+#                                                 other_cause_death_dist=other_cause_death_female,
+#                                                 starting_age=starting_age,
+#                                                 num_screens=num_screens,
+#                                                 screen_interval=screen_interval,
+#                                                 end_time=ending_age,
+#                                                 surv_param_table=surv_param_table,
+#                                                 optimistic_surv_param_table=optimistic_surv_param_table,
+#                                                 sex="Female",
+#                                                 MCED_specificity=MCED_specificity),
+#                                 SIMPLIFY = FALSE)
+#
+#
+#   #Get the first cancer and additional cancers for all individuals (female)
+#   first_site_female=lapply(results_list_female,"[[","first_result")
+#   additional_sites_female=lapply(results_list_female,"[[","stored_result")
+#
+#   #Get the first cancer and additional cancers for all individuals (male)
+#   first_site_male=lapply(results_list_male,"[[","first_result")
+#   additional_sites_male=lapply(results_list_male,"[[","stored_result")
+#
+#
+#   # Combine all individual results (first cancers)
+#   combined_first_results_males <- do.call(rbind, first_site_male)%>%mutate(sex="Male")
+#   combined_first_results_females <- do.call(rbind, first_site_female)%>%mutate(sex="Female")
+#   combined_first_results=bind_rows(combined_first_results_males,combined_first_results_females)%>%
+#     mutate(start_age=starting_age,end_time=ending_age)
+#
+#   # Combine all individual results (additional cancers)
+#   combined_additional_results_males <- do.call(rbind, additional_sites_male)%>%mutate(sex="Male")
+#   combined_additional_results_females <- do.call(rbind, additional_sites_female)%>%mutate(sex="Female")
+#   combined_additional_results=bind_rows(combined_additional_results_males,combined_additional_results_females)%>%
+#     mutate(start_age=starting_age,end_time=ending_age)
+#
+#   return(list(
+#     combined_additional_results=combined_additional_results,
+#     combined_first_results=combined_first_results
+#   ))
+# }
+
+###############
+# NEW
+#############
 sim_MCED_parallel_universe_before_CRC <- function(cancer_sites,
                                                   LMST_vec,
                                                   OMST_vec,
@@ -124,18 +269,21 @@ sim_MCED_parallel_universe_before_CRC <- function(cancer_sites,
                                                   hmd_data,
                                                   MCED_cdc,
                                                   surv_param_table,
+                                                  race,                          # NEW: single race for this run (matches how race is already handled -- a whole-run setting, same as OMST/LMST)
+                                                  treatment_lookup,              # NEW: Sex x Race x Histology x Stage novel-treatment table, passed through unfiltered
+                                                  treatment_surv_table,          # NEW (Step 5): pred_treated
                                                   optimistic_surv_param_table=NULL,
                                                   simulation_seed){
 
 
 
- total_individuals=num_males+num_females
+  total_individuals=num_males+num_females
 
 
- start_male=(simulation_seed-1)*(total_individuals)+1
+  start_male=(simulation_seed-1)*(total_individuals)+1
 
- end_male=start_male+num_males-1
-   # Create a vector of IDs
+  end_male=start_male+num_males-1
+  # Create a vector of IDs
   IDs_male <- start_male:end_male
 
   # Female IDs: continue sequentially after males
@@ -195,7 +343,9 @@ sim_MCED_parallel_universe_before_CRC <- function(cancer_sites,
                                               end_time=ending_age,
                                               surv_param_table=surv_param_table,
                                               optimistic_surv_param_table=optimistic_surv_param_table,
-
+                                              race=race,                        # NEW
+                                              treatment_lookup=treatment_lookup, # NEW
+                                              treatment_surv_table=treatment_surv_table,   # NEW
                                               sex="Male",MCED_specificity=MCED_specificity),
                               SIMPLIFY = FALSE)
 
@@ -212,6 +362,9 @@ sim_MCED_parallel_universe_before_CRC <- function(cancer_sites,
                                                 end_time=ending_age,
                                                 surv_param_table=surv_param_table,
                                                 optimistic_surv_param_table=optimistic_surv_param_table,
+                                                race=race,                        # NEW
+                                                treatment_lookup=treatment_lookup, # NEW
+                                                treatment_surv_table=treatment_surv_table,   # NEW
                                                 sex="Female",
                                                 MCED_specificity=MCED_specificity),
                                 SIMPLIFY = FALSE)
@@ -243,4 +396,8 @@ sim_MCED_parallel_universe_before_CRC <- function(cancer_sites,
     combined_first_results=combined_first_results
   ))
 }
+
+
+
+
 
