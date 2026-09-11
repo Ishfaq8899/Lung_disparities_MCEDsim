@@ -269,9 +269,9 @@ sim_MCED_parallel_universe_before_CRC <- function(cancer_sites,
                                                   hmd_data,
                                                   MCED_cdc,
                                                   surv_param_table,
-                                                  race,                          # NEW: single race for this run (matches how race is already handled -- a whole-run setting, same as OMST/LMST)
-                                                  treatment_lookup,              # NEW: Sex x Race x Histology x Stage novel-treatment table, passed through unfiltered
-                                                  treatment_surv_table,          # NEW (Step 5): pred_treated
+                                                  race,                          # single race for this run
+                                                  treatment_lookup,              # Sex x Race x Histology x Stage novel-treatment table
+                                                  treatment_surv_table,          # pred_treated
                                                   optimistic_surv_param_table=NULL,
                                                   simulation_seed){
 

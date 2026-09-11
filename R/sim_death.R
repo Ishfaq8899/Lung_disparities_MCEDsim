@@ -70,18 +70,14 @@ sim_cancer_death_param <- function(the_stage, the_cancer_site, the_sex, the_race
   # ==============================================================================
   if(!is.na(novel_tx_received) && novel_tx_received == 1){
 
-  # NEW checkpoint - only stops here when someone actually gets novel treatment
-  #  browser()
+   #  browser()
 
     if(is.null(treatment_surv_table)){
       stop("novel_tx_received == 1 but no treatment_surv_table was provided.")
     }
 
-    curve <- treatment_surv_table %>%
-      filter(stage == paste(the_stage),
-             cancer_site == paste(the_cancer_site),
-             sex == paste(the_sex),
-             race == paste(the_race))
+    curve <- treatment_surv_table %>% filter(stage == paste(the_stage),
+             cancer_site == paste(the_cancer_site), sex == paste(the_sex), race == paste(the_race))
 
     if(nrow(curve) == 0){
       stop("No matching novel-treatment survival curve for: ",

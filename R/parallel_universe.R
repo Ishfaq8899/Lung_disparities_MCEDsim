@@ -215,9 +215,9 @@ sim_individual_MCED<-function( ID,
                                screen_interval,
                                end_time,
                                sex,
-                               race,                          # NEW (Step 3): outer function now receives race
-                               treatment_lookup,              # NEW (Step 3): Sex x Race x Histology x Stage table
-                               treatment_surv_table,          # NEW (Step 5): pred_treated/treatment_parametric_surv_fits
+                               race,                          #  outer function now receives race
+                               treatment_lookup,              # Sex x Race x Histology x Stage table
+                               treatment_surv_table,          # pred_treated/treatment_parametric_surv_fits
                                surv_param_table,
                                optimistic_surv_param_table=NULL){
 
@@ -289,9 +289,7 @@ sim_individual_MCED<-function( ID,
       # NEW treatment-assignment step.
       # Filter treatment_lookup down to this person's Sex/Race/Histology/Stage.
       # ============================
-      the_tx_row <- treatment_lookup %>% filter(Sex == sex,
-             Histology == first_cancer_row$cancer_site,
-             Stage == first_cancer_row$clinical_diagnosis_stage)
+      the_tx_row <- treatment_lookup %>% filter(Sex == sex, Histology==first_cancer_row$cancer_site, Stage == first_cancer_row$clinical_diagnosis_stage)
 
       if(nrow(the_tx_row) != 1){stop("Expected exactly 1 matching row in treatment_lookup for Sex=", sex,
                                      ",Histology=", first_cancer_row$cancer_site,
@@ -311,8 +309,7 @@ sim_individual_MCED<-function( ID,
       # novel_tx_received (0 or 1)
      # browser()
 
-      first_cancer_row <- first_cancer_row %>%
-        mutate(novel_tx_received = the_novel_tx_received, novel_tx_hr_used  = the_novel_tx_hr)
+      first_cancer_row <- first_cancer_row %>% mutate(novel_tx_received = the_novel_tx_received, novel_tx_hr_used  = the_novel_tx_hr)
       # ==========================================================================
       # END treatment-assignment block. novel_tx_received now WIRED IN below
       # (Step 5) -- both death-time calls now pass it, along with race and
